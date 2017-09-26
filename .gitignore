@@ -31,3 +31,5 @@
 *.out
 *.app
 *.user
+/build-kc_db_link-Desktop_Qt_5_9_1_MinGW_32bit-Release
+/build-kc_db_link-Desktop_Qt_5_9_1_MinGW_32bit-Debug
