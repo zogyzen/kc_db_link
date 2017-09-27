@@ -1,30 +1,14 @@
-#include "stddb.h"
+#include "framework_ex/bundle_context_helper.h"
+using namespace KC;
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-
-    try{
-       //Erase previous message queue
-       message_queue::remove("message_queue");
-
-       //Create a message_queue.
-       message_queue mq
-          (create_only               //only create
-          ,"message_queue"           //name
-          ,100                       //max message number
-          ,sizeof(int)               //max message size
-          );
-
-       //Send 100 numbers
-       for(int i = 0; i < 100; ++i){
-          mq.send(&i, sizeof(i), 0);
-       }
+    filesystem::path mainDir(argv[0]);
+    BundleContextHelper contHelp(mainDir.branch_path().string().c_str());
+    if (contHelp.isSuccess())
+    {
+        IBundleContext& cont = contHelp.getContext();
     }
-    catch(interprocess_exception &ex){
-       std::cout << ex.what() << std::endl;
-       return 1;
-    }
-
-    return a.exec();
+    else cout << "Load framework fail." << endl;
+    return 0;
 }

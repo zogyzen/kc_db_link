@@ -2,7 +2,7 @@
 
 constexpr int g_ConnCount = 8;
 
-#include "stddb.h"
+#include "stdsrv.h"
 #include "db_helper_i.h"
 using namespace kc_db;
 

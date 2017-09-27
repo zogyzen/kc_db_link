@@ -1,9 +1,10 @@
-QT += core sql
-QT -= gui
+QT -= gui core
+
+INCLUDEPATH += ../reference/include
 
 INCLUDEPATH += D:/library/boost_1_64_qt/include/
 LIBS += -L"D:/library/boost_1_64_qt/lib/"
-LIBS += -lboost_system-mgw53-1_64 -lboost_thread-mgw53-mt-1_64
+LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
 
 CONFIG += c++11
 
@@ -26,5 +27,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-HEADERS += \
-    stdsrv.h
+HEADERS +=
+
+win32 {
+    SOURCES += ../reference/sources/const_windows.cpp
+}
+!win32 {
+    SOURCES += ../reference/sources/const_linux.cpp
+}
