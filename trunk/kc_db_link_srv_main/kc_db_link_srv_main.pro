@@ -29,6 +29,11 @@ HEADERS += \
     activator.h \
     stdm.h
 
+win32 {
+    INCLUDEPATH += D:/library/boost_1_64_qt/include/
+    LIBS += -L"D:/library/boost_1_64_qt/lib/"
+    LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
+}
 unix {
     target.path = /usr/lib
     INSTALLS += target

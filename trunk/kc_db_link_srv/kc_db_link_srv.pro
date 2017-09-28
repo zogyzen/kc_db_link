@@ -2,10 +2,6 @@ QT -= gui core
 
 INCLUDEPATH += ../reference/include
 
-INCLUDEPATH += D:/library/boost_1_64_qt/include/
-LIBS += -L"D:/library/boost_1_64_qt/lib/"
-LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
-
 CONFIG += c++11
 
 TARGET = kc_db_link_srv
@@ -30,8 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS +=
 
 win32 {
-    SOURCES += ../reference/sources/const_windows.cpp
+    INCLUDEPATH += D:/library/boost_1_64_qt/include/
+    LIBS += -L"D:/library/boost_1_64_qt/lib/"
+    LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
+    SOURCES += const_windows.cpp
 }
-!win32 {
-    SOURCES += ../reference/sources/const_linux.cpp
+unix {
+    SOURCES += const_linux.cpp
 }
