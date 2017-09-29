@@ -11,6 +11,7 @@ using namespace std;
 #include <boost/any.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
 using namespace boost;
 using namespace boost::interprocess;
 
