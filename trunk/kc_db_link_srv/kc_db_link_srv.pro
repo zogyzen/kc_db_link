@@ -1,6 +1,7 @@
 QT -= gui core
 
 INCLUDEPATH += ../reference/include
+INCLUDEPATH += ../include
 
 CONFIG += c++11
 

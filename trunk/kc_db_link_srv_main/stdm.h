@@ -14,12 +14,6 @@ using namespace std;
 using namespace boost;
 using namespace boost::interprocess;
 
-#include <QDebug>
-#include <QObject>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlField>
-#include <QSqlError>
-#include <QCoreApplication>
-#include <QDir>
+#include "framework/bundle_activator_i.h"
+#include "kc_db_link/srv_main_i.h"
+using namespace KC;

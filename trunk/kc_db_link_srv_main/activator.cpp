@@ -1,11 +1,5 @@
-#include "stdm.h"
 #include "activator.h"
-
-#include "kc_web_work.h"
-
-////////////////////////////////////////////////////////////////////////////////
-// 全局变量
-IKCWebWork *g_WebWork = nullptr;
+#include "srv_main.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // TActivator类
@@ -18,20 +12,18 @@ KC::CActivator::CActivator(const IBundle& bundle)
 bool KC::CActivator::start(void)
 {
 	if (nullptr == m_srv)
-		m_srv = new CKCWebWork(m_bundle);
+        m_srv = new CKCSrvMain(m_bundle);
 	if (nullptr == m_sreg)
 		m_sreg = m_context.registerService(*m_srv);
-    g_WebWork = m_srv;
 	return true;
 }
 
 // 停止模块（注销服务等）
 bool KC::CActivator::stop(void)
 {
-    g_WebWork = nullptr;
 	m_context.unregisterService(m_sreg);
 	m_sreg = nullptr;
-	delete dynamic_cast<CKCWebWork*>(m_srv);
+    delete dynamic_cast<CKCSrvMain*>(m_srv);
 	m_srv = nullptr;
 	return true;
 }

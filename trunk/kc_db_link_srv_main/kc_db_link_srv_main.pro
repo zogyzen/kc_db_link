@@ -6,6 +6,9 @@
 
 QT       -= core gui
 
+INCLUDEPATH += ../reference/include
+INCLUDEPATH += ../include
+
 TARGET = kc_db_link_srv_main
 TEMPLATE = lib
 
@@ -23,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    activator.cpp
+    activator.cpp \
+    srv_main.cpp
 
 HEADERS += \
     activator.h \
-    stdm.h
+    stdm.h \
+    srv_main.h
 
 win32 {
     INCLUDEPATH += D:/library/boost_1_64_qt/include/
