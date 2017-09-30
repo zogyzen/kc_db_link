@@ -34,6 +34,8 @@ void CKCSrvMain::run(void)
 {
     try
     {
+        m_context.WriteLogInfo("启动消息队列", __FUNCTION__, c_KCSrvMainSrvGUID);
+        IServiceReferenceEx &wk = dynamic_cast<IBundleContextEx&>(m_context).getServiceRef(c_KCSrvWorkSrvGUID);
         // 创建
         message_queue::remove(m_MsgInName);
         message_queue::remove(m_MsgOutName);
@@ -58,21 +60,24 @@ void CKCSrvMain::run(void)
                 string sRequest = (char*)pRequest;
                 mhm.deallocate(pRequest);
                 // 处理请求
-                dealRequest(sRequest);
+                wk.getServiceSafe<IKCSrvWork>().request(sRequest.c_str(), *this);
             }
         }
         // 退出
         message_queue::remove(m_MsgInName);
         message_queue::remove(m_MsgOutName);
         shared_memory_object::remove(m_MemName);
+        m_context.WriteLogInfo("结束消息队列", __FUNCTION__, c_KCSrvMainSrvGUID);
     }
-    catch(interprocess_exception &ex)
+    catch(std::exception &ex)
     {
+        m_context.WriteLogInfo("消息队列异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
     }
 }
 
-// 处理请求
-void CKCSrvMain::dealRequest(string sReq)
-{
 
+// 响应结果
+void CKCSrvMain::respond(const char* res)
+{
+    cout << res << endl;
 }

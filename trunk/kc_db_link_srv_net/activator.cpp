@@ -1,5 +1,5 @@
 #include "activator.h"
-#include "srv_db.h"
+#include "srv_net.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // TActivator¿‡
@@ -12,7 +12,7 @@ KC::CActivator::CActivator(const IBundle& bundle)
 bool KC::CActivator::start(void)
 {
 	if (nullptr == m_srv)
-        m_srv = new CKCSrvDb(m_bundle);
+        m_srv = new CKCSrvNet(m_bundle);
 	if (nullptr == m_sreg)
 		m_sreg = m_context.registerService(*m_srv);
 	return true;
@@ -23,7 +23,7 @@ bool KC::CActivator::stop(void)
 {
 	m_context.unregisterService(m_sreg);
 	m_sreg = nullptr;
-    delete dynamic_cast<CKCSrvDb*>(m_srv);
+    delete dynamic_cast<CKCSrvNet*>(m_srv);
 	m_srv = nullptr;
 	return true;
 }

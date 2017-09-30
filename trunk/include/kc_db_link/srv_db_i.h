@@ -1,54 +1,29 @@
 #pragma once
 
-namespace kc_db
+#include "framework_ex/service_ex_i.h"
+#include "framework_ex/framework_exception.h"
+
+namespace KC
 {
-    class IVal
+    // 数据库接口
+    class IKCSrvDb : public IServiceEx
     {
     public:
-        enum EValType { evtInt = 0, evtFloat, evtString };
+        // 启动
+        virtual void run(void) = 0;
 
-    public:
-        virtual int GetID(void) = 0;
-        virtual IVal& Set(int) = 0;
-        virtual IVal& Set(double) = 0;
-        virtual IVal& Set(const char*) = 0;
-        virtual int AsInt(void) = 0;
-        virtual double AsFloat(void) = 0;
-        virtual const char* AsStr(void) = 0;
-        virtual EValType GetType(void) = 0;
+    protected:
+        virtual CALL_TYPE ~IKCSrvDb() = default;
     };
 
-    class IRecodeSet
-    {
-    public:
-        virtual int GetID(void) = 0;
-        virtual int FieldCount(void) = 0;
-        virtual const char* FieldName(int) = 0;
-        virtual int FieldType(int i) = 0;
-        virtual IVal& Value(int) = 0;
-        virtual IVal& Value(const char*) = 0;
-        virtual bool Next(void) = 0;
-    };
+    constexpr const char c_KCSrvDbSrvGUID[] = "IKCSrvDb_B5E289BB-ADB8-92F8-CF31-BD411D2F5BBD";
 
-    class IParms
+    class TKCSrvDbException : public TFWSrvException
     {
     public:
-        virtual int GetID(void) = 0;
-        virtual IVal& NewVal(void) = 0;
-        virtual void Add(const char* sName, IVal&) = 0;
-        virtual IVal& Get(const char* sName) = 0;
-        virtual int GetCount(void) = 0;
-        virtual const char* GetParmName(int i) = 0;
-    };
-
-    class IDbHelper
-    {
-    public:
-        virtual bool Init(IParms&) = 0;
-        virtual IParms& CreateParm(void) = 0;
-        virtual int Exec(const char* sSql, IParms* = nullptr) = 0;
-        virtual IRecodeSet& Query(const char* sSql, IParms* = nullptr) = 0;
-        virtual void Release(IRecodeSet&) = 0;
-        virtual void Release(IParms&) = 0;
+            TKCSrvDbException(int id, string place, string msg, string name)
+                            : TFWSrvException(id, place, msg, name, c_KCSrvDbSrvGUID) {}
+            TKCSrvDbException(int id, string place, string msg, IKCSrvDb& srv)
+                            : TFWSrvException(id, place, msg, srv) {}
     };
 }

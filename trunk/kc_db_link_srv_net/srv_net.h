@@ -1,14 +1,14 @@
 #pragma once
 
-#include "stdm.h"
+#include "stdn.h"
 
 namespace KC
 {
-    class CKCSrvMain : public IKCSrvMain, public IRespondBackCall
+    class CKCSrvNet : public IKCSrvNet, public IRespondBackCall
     {
     public:
-        CKCSrvMain(const IBundle& bundle);
-        virtual CALL_TYPE ~CKCSrvMain();
+        CKCSrvNet(const IBundle& bundle);
+        virtual CALL_TYPE ~CKCSrvNet();
 
         // 得到服务特征码
         const char* CALL_TYPE getGUID(void) const override;
@@ -27,10 +27,6 @@ namespace KC
         const IBundle& m_bundle;
         // 其他参数
         atomic_bool m_exit;
-        const char* m_MsgInName = nullptr;
-        const char* m_MsgOutName = nullptr;
-        unsigned m_MsgSize = 100;
-        const char* m_MemName = nullptr;
-        unsigned m_MemSize = 1024 * 1024 * 8;
+        unsigned m_port = 20179;
     };
 }

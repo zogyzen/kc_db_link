@@ -11,13 +11,8 @@ using namespace std;
 
 #include <boost/any.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/interprocess/ipc/message_queue.hpp>
-#include <boost/interprocess/managed_shared_memory.hpp>
 using namespace boost;
-using namespace boost::interprocess;
 
 #include "framework/bundle_activator_i.h"
-#include "framework_ex/bundle_context_ex_i.h"
-#include "kc_db_link/srv_main_i.h"
 #include "kc_db_link/srv_work_i.h"
 using namespace KC;

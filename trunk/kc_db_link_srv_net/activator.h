@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stddb.h"
+#include "stdn.h"
 
 namespace KC
 {
@@ -21,7 +21,7 @@ namespace KC
         const IBundle& m_bundle;
 
         // ·þÎñ²ã
-        IKCSrvDb *m_srv = nullptr;
+        IKCSrvNet *m_srv = nullptr;
         IServiceRegistration *m_sreg = nullptr;
 	};
 }

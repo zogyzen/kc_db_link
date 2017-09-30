@@ -9,7 +9,7 @@ QT       -= core gui
 INCLUDEPATH += ../reference/include
 INCLUDEPATH += ../include
 
-TARGET = kc_db_link_srv_db
+TARGET = kc_db_link_srv_work
 TEMPLATE = lib
 
 DEFINES += KC_DB_LINK_SRV_MAIN_LIBRARY
@@ -27,12 +27,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     activator.cpp \
-    srv_db.cpp
+    srv_work.cpp
 
 HEADERS += \
     activator.h \
-    srv_db.h \
-    stddb.h
+    srv_work.h \
+    stdw.h
 
 win32 {
     INCLUDEPATH += D:/library/boost_1_64_qt/include/
