@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <functional>
+#include <atomic>
 using namespace std;
 
 #include <boost/any.hpp>

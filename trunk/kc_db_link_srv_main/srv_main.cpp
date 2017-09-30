@@ -1,17 +1,15 @@
 #include "srv_main.h"
 
-// 消息队列
-const char* c_message_queue_in_name = "kc_db_message_queue_in_v10";
-const char* c_message_queue_out_name = "kc_db_message_queue_out_v10";
-const unsigned c_message_queue_size = 100;
-// 共享内存
-const char* c_shared_memory_name = "kc_db_shared_memory_v10";
-const unsigned c_shared_memory_size = 1024 * 1024 * 8;
-
 ////////////////////////////////////////////////////////////////////////////////
 // CKCSrvMain类
 CKCSrvMain::CKCSrvMain(const IBundle& bundle)
-    : m_context(bundle.getContext()), m_bundle(bundle)
+    : m_context(bundle.getContext()), m_bundle(bundle), m_exit(false)
+    // 读配置文件中的参数
+    , m_MsgInName(m_context.GetCfgInfo("message_queue_in_name", "value", "kc_db_message_queue_in_v10"))
+    , m_MsgOutName(m_context.GetCfgInfo("message_queue_out_name", "value", "kc_db_message_queue_out_v10"))
+    , m_MsgSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("message_queue_size", "value", "100"))))
+    , m_MemName(m_context.GetCfgInfo("shared_memory_name", "value", "kc_db_shared_memory_v10"))
+    , m_MemSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("shared_memory_size", "value", "8388608"))))
 {
 }
 
@@ -36,28 +34,45 @@ void CKCSrvMain::run(void)
 {
     try
     {
-       // 创建
-       message_queue::remove(c_message_queue_in_name);
-       message_queue::remove(c_message_queue_out_name);
-       shared_memory_object::remove(c_shared_memory_name);
-       message_queue mqIn(create_only, c_message_queue_in_name, c_message_queue_size, sizeof(int));
-       message_queue mqOut(create_only, c_message_queue_out_name, c_message_queue_size, sizeof(int));
-       managed_shared_memory mhm(create_only, c_shared_memory_name, c_shared_memory_size);
-       // 启动消息队列
-       for(bool bExit = false; !bExit; )
-       {
-           unsigned int priority;
-           message_queue::size_type recvd_size;
-           int number;
-           mqIn.receive(&number, sizeof(number), recvd_size, priority);
-       }
-       // 退出
-       message_queue::remove(c_message_queue_in_name);
-       message_queue::remove(c_message_queue_out_name);
-       shared_memory_object::remove(c_shared_memory_name);
+        // 创建
+        message_queue::remove(m_MsgInName);
+        message_queue::remove(m_MsgOutName);
+        shared_memory_object::remove(m_MemName);
+        message_queue mqIn(create_only, m_MsgInName, m_MsgSize, sizeof(int));
+        message_queue mqOut(create_only, m_MsgOutName, m_MsgSize, sizeof(int));
+        managed_shared_memory mhm(create_only, m_MemName, m_MemSize);
+        // 启动消息队列
+        while (!m_exit)
+        {
+            unsigned int priority = 0;
+            message_queue::size_type recvd_size = 0;
+            int num = 0;
+            // 取消息
+            mqIn.receive(&num, sizeof(num), recvd_size, priority);
+            cout << "receive message - " << num << endl;
+            if (num <= 0) m_exit = true;
+            else
+            {
+                // 得到消息请求内容
+                void* pRequest = mhm.get_address_from_handle(num);
+                string sRequest = (char*)pRequest;
+                mhm.deallocate(pRequest);
+                // 处理请求
+                dealRequest(sRequest);
+            }
+        }
+        // 退出
+        message_queue::remove(m_MsgInName);
+        message_queue::remove(m_MsgOutName);
+        shared_memory_object::remove(m_MemName);
     }
     catch(interprocess_exception &ex)
     {
     }
 }
 
+// 处理请求
+void CKCSrvMain::dealRequest(string sReq)
+{
+
+}
