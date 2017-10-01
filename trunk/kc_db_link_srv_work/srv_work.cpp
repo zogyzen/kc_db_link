@@ -24,11 +24,11 @@ const IBundle& CKCSrvWork::getBundle(void) const
 }
 
 // 处理请求
-void CKCSrvWork::request(const char* req, IRespondBackCall& res)
+void CKCSrvWork::request(const char* req, int len, IRespondBackCall& res)
 {
     try
     {
-        res.respond(req);
+        res.respond(req, len);
     }
     catch(std::exception &ex)
     {

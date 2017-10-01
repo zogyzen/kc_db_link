@@ -11,7 +11,13 @@ int main(int/* argc */, char *argv[])
     if (contHelp.isSuccess())
     {
         IBundleContextEx& cont = contHelp.getContext();
-        cont.getService<IKCSrvNet>(c_KCSrvNetSrvGUID).run();
+        try
+        {
+            cont.getService<IKCSrvNet>(c_KCSrvNetSrvGUID).run();
+        }
+        catch (std::exception&)
+        {
+        }
         cont.getService<IKCSrvMain>(c_KCSrvMainSrvGUID).run();
     }
     else cout << "Load framework fail." << endl;

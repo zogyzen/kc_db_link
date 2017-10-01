@@ -57,10 +57,12 @@ void CKCSrvMain::run(void)
             {
                 // 得到消息请求内容
                 void* pRequest = mhm.get_address_from_handle(num);
-                string sRequest = (char*)pRequest;
+                int iLen = *(int*)pRequest;
+                string sRequest;
+                sRequest.append((char*)pRequest + sizeof(int), (char*)pRequest + iLen);
                 mhm.deallocate(pRequest);
                 // 处理请求
-                wk.getServiceSafe<IKCSrvWork>().request(sRequest.c_str(), *this);
+                wk.getServiceSafe<IKCSrvWork>().request(sRequest.c_str(), iLen, *this);
             }
         }
         // 退出
@@ -71,13 +73,26 @@ void CKCSrvMain::run(void)
     }
     catch(std::exception &ex)
     {
-        m_context.WriteLogInfo("消息队列异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
+        m_context.WriteLogFatal("消息队列异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
     }
 }
 
-
 // 响应结果
-void CKCSrvMain::respond(const char* res)
+void CKCSrvMain::respond(const char* res, int len)
 {
     cout << res << endl;
+    try
+    {
+        message_queue mqOut(open_only, m_MsgOutName);
+        managed_shared_memory mhm(open_only, m_MemName);
+        void* pRes = mhm.allocate(len + sizeof(int));
+        memcpy(pRes, &len, sizeof(len));
+        memcpy((char*)pRes + sizeof(len), res, len);
+        int numHandle = mhm.get_handle_from_address(pRes);
+        mqOut.send(&numHandle, sizeof(numHandle), 0);
+    }
+    catch (std::exception &ex)
+    {
+        m_context.WriteLogFatal("响应异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what() + "\n" + res).c_str());
+    }
 }
