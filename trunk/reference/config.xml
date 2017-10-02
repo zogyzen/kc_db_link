@@ -16,7 +16,7 @@
 	<Modules>
 		<kc_db_link_srv_main Path="" Activation="2" />
 		<kc_db_link_srv_net Path="" Activation="2" />
-		<kc_db_link_srv_main Path="" Activation="2" />
+		<kc_db_link_srv_work Path="" Activation="2" />
 		<kc_db_link_srv_db Path="" Activation="2" />
 	</Modules>
 </Config>
