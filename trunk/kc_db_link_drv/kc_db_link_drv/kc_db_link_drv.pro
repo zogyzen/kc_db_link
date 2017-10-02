@@ -8,6 +8,7 @@ QT       -= core gui
 
 INCLUDEPATH += ../include
 
+DESTDIR += ../bin
 TARGET = kc_db_link_drv
 TEMPLATE = lib
 
@@ -28,8 +29,15 @@ SOURCES += \
     db_drv.cpp
 
 HEADERS += \
-    db_drv.h
+    db_drv.h \
+    stddrv.h
 
+win32 {
+    INCLUDEPATH += D:/library/boost_1_64_qt/include/
+    LIBS += -L"D:/library/boost_1_64_qt/lib/"
+    LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
+    DEFINES += WIN32
+}
 unix {
     target.path = /usr/lib
     INSTALLS += target

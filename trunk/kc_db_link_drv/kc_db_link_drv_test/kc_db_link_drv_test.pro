@@ -5,6 +5,7 @@ INCLUDEPATH += ../include
 
 CONFIG += c++11
 
+DESTDIR += ../bin
 TARGET = kc_db_link_drv_test
 CONFIG += console
 CONFIG -= app_bundle
