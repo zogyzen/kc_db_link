@@ -5,7 +5,7 @@
 CKCSrvNet::CKCSrvNet(const IBundle& bundle)
     : m_context(bundle.getContext()), m_bundle(bundle), m_exit(false)
     // 读配置文件中的参数
-    , m_port(lexical_cast<unsigned>(string(m_context.GetCfgInfo("srv_net_port", "value", "20179"))))
+    , m_port(lexical_cast<unsigned>(string(m_context.GetCfgInfo("Config.Parameters.srv_net_port", "value", "20179"))))
 {
 }
 
@@ -30,6 +30,7 @@ void CKCSrvNet::run(void)
 {
     try
     {
+        cout << "Start Net DB" << endl;
     }
     catch(std::exception &ex)
     {

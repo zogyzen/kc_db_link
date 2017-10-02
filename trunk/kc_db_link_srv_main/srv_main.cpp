@@ -5,11 +5,11 @@
 CKCSrvMain::CKCSrvMain(const IBundle& bundle)
     : m_context(bundle.getContext()), m_bundle(bundle), m_exit(false)
     // 读配置文件中的参数
-    , m_MsgInName(m_context.GetCfgInfo("message_queue_in_name", "value", "kc_db_message_queue_in_v10"))
-    , m_MsgOutName(m_context.GetCfgInfo("message_queue_out_name", "value", "kc_db_message_queue_out_v10"))
-    , m_MsgSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("message_queue_size", "value", "100"))))
-    , m_MemName(m_context.GetCfgInfo("shared_memory_name", "value", "kc_db_shared_memory_v10"))
-    , m_MemSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("shared_memory_size", "value", "8388608"))))
+    , m_MsgInName(m_context.GetCfgInfo("Config.Parameters.message_queue_in_name", "value", "kc_db_message_queue_in_v10"))
+    , m_MsgOutName(m_context.GetCfgInfo("Config.Parameters.message_queue_out_name", "value", "kc_db_message_queue_out_v10"))
+    , m_MsgSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("Config.Parameters.message_queue_size", "value", "100"))))
+    , m_MemName(m_context.GetCfgInfo("Config.Parameters.shared_memory_name", "value", "kc_db_shared_memory_v10"))
+    , m_MemSize(lexical_cast<unsigned>(string(m_context.GetCfgInfo("Config.Parameters.shared_memory_size", "value", "8388608"))))
 {
 }
 
@@ -34,15 +34,16 @@ void CKCSrvMain::run(void)
 {
     try
     {
-        m_context.WriteLogInfo("启动消息队列", __FUNCTION__, c_KCSrvMainSrvGUID);
+        cout << "Start Message Queue" << endl;
+        m_context.WriteLogInfo(m_context.getHint("Message_queue_start"), __FUNCTION__, c_KCSrvMainSrvGUID);
         IServiceReferenceEx &wk = dynamic_cast<IBundleContextEx&>(m_context).getServiceRef(c_KCSrvWorkSrvGUID);
         // 创建
-        message_queue::remove(m_MsgInName);
-        message_queue::remove(m_MsgOutName);
-        shared_memory_object::remove(m_MemName);
-        message_queue mqIn(create_only, m_MsgInName, m_MsgSize, sizeof(int));
-        message_queue mqOut(create_only, m_MsgOutName, m_MsgSize, sizeof(int));
-        managed_shared_memory mhm(create_only, m_MemName, m_MemSize);
+        message_queue::remove(m_MsgInName.c_str());
+        message_queue::remove(m_MsgOutName.c_str());
+        shared_memory_object::remove(m_MemName.c_str());
+        message_queue mqIn(create_only, m_MsgInName.c_str(), m_MsgSize, sizeof(int));
+        message_queue mqOut(create_only, m_MsgOutName.c_str(), m_MsgSize, sizeof(int));
+        managed_shared_memory mhm(create_only, m_MemName.c_str(), m_MemSize);
         // 启动消息队列
         while (!m_exit)
         {
@@ -66,14 +67,15 @@ void CKCSrvMain::run(void)
             }
         }
         // 退出
-        message_queue::remove(m_MsgInName);
-        message_queue::remove(m_MsgOutName);
-        shared_memory_object::remove(m_MemName);
-        m_context.WriteLogInfo("结束消息队列", __FUNCTION__, c_KCSrvMainSrvGUID);
+        message_queue::remove(m_MsgInName.c_str());
+        message_queue::remove(m_MsgOutName.c_str());
+        shared_memory_object::remove(m_MemName.c_str());
+        m_context.WriteLogInfo(m_context.getHint("Message_queue_end"), __FUNCTION__, c_KCSrvMainSrvGUID);
     }
     catch(std::exception &ex)
     {
-        m_context.WriteLogFatal("消息队列异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
+        cout << "Message Queue Exception - " << (string("[") + typeid(ex).name() + "] " + ex.what()) << endl;
+        m_context.WriteLogFatal(m_context.getHint("Message_queue_exception"), __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
     }
 }
 
@@ -83,8 +85,8 @@ void CKCSrvMain::respond(const char* res, int len)
     cout << res << endl;
     try
     {
-        message_queue mqOut(open_only, m_MsgOutName);
-        managed_shared_memory mhm(open_only, m_MemName);
+        message_queue mqOut(open_only, m_MsgOutName.c_str());
+        managed_shared_memory mhm(open_only, m_MemName.c_str());
         void* pRes = mhm.allocate(len + sizeof(int));
         memcpy(pRes, &len, sizeof(len));
         memcpy((char*)pRes + sizeof(len), res, len);
@@ -93,6 +95,6 @@ void CKCSrvMain::respond(const char* res, int len)
     }
     catch (std::exception &ex)
     {
-        m_context.WriteLogFatal("响应异常", __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what() + "\n" + res).c_str());
+        m_context.WriteLogFatal(m_context.getHint("Respond_exception"), __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what() + "\n" + res).c_str());
     }
 }

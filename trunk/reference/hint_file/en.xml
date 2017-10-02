@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<Hint>
+	<Unknown_exception String="Unknown exception" />
+	<Method_Not_Allowed String="Method Not Allowed" />
+	<Start_framework String="***** Start %1% ***** - %2%" />
+	<End_framework String="***** End %1% ***** - %2%" />
+	<Repeat_to_install_ String="Repeat to install - " />
+	<Install_Bundle_ String="Install Bundle - " />
+	<Install_Bundle_Success_ String="Install Bundle Success - " />
+	<Uninstall_Bundle_ String="Uninstall Bundle - " />
+	<Can_t_find_the_bundle_ String="Can't find the bundle - " />
+	<The_service_GUID_is_null_ String="The service GUID is null - " />
+	<Repeat_to_register_service_ String="Repeat to register service - " />
+	<Register_Service_ String="Register Service - " />
+	<Register_Service_Success_ String="Register Service Success - " />
+	<Unregister_Service_ String="Unregister Service - " />
+	<Take_Reference_Service String="Take Reference Service." />
+	<Free_Reference_Service String="Free Reference Service." />
+	<Can_t_get_the_function_ String="Can't get the function - " />
+	<The_service_don_t_exist_ String="The service don't exist - " />
+	<The_path_config_don_t_exist_ String="The path config don't exist - " />
+	
+	<Message_queue_start String="Start message queue." />
+	<Message_queue_end String="End message queue." />
+	<Message_queue_exception String="Message queue exception." />
+	<Respond_exception String="Respond exception." />
+</Hint>

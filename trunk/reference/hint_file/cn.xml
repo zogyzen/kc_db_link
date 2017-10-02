@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<Hint>
+	<Unknown_exception String="未知错误" />
+	<Method_Not_Allowed String="未指定方法" />
+	<Start_framework String="***** 启动框架 %1% ***** - %2%" />
+	<End_framework String="***** 结束框架 %1% ***** - %2%" />
+	<Repeat_to_install_ String="重复安装模块 - " />
+	<Install_Bundle_ String="模块安装 - " />
+	<Install_Bundle_Success_ String="模块安装成功 - " />
+	<Uninstall_Bundle_ String="卸载模块 - " />
+	<Can_t_find_the_bundle_ String="不能发现模块 - " />
+	<The_service_GUID_is_null_ String="服务的唯一标识GUID为空 - " />
+	<Repeat_to_register_service_ String="重复注册服务 - " />
+	<Register_Service_ String="服务注册 - " />
+	<Register_Service_Success_ String="服务注册成功 - " />
+	<Unregister_Service_ String="注销服务 - " />
+	<Take_Reference_Service String="引用服务." />
+	<Free_Reference_Service String="释放服务引用." />
+	<Can_t_get_the_function_ String="不能获取函数 - " />
+	<The_service_don_t_exist_ String="服务不存在 - " />
+	<The_path_config_don_t_exist_ String="配置文件不存在 - " />
+	
+	<Message_queue_start String="启动消息队列." />
+	<Message_queue_end String="结束消息队列." />
+	<Message_queue_exception String="消息队列异常." />
+	<Respond_exception String="响应异常." />
+</Hint>

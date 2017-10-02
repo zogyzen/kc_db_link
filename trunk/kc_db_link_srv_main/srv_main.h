@@ -27,10 +27,10 @@ namespace KC
         const IBundle& m_bundle;
         // 其他参数
         atomic_bool m_exit;
-        const char* m_MsgInName = nullptr;
-        const char* m_MsgOutName = nullptr;
+        string m_MsgInName;
+        string m_MsgOutName;
         unsigned m_MsgSize = 100;
-        const char* m_MemName = nullptr;
+        string m_MemName;
         unsigned m_MemSize = 1024 * 1024 * 8;
     };
 }
