@@ -5,7 +5,9 @@ INCLUDEPATH += ../include
 
 CONFIG += c++11
 
+DESTDIR += ../bin
 TARGET = kc_db_link_srv
+
 CONFIG += console
 CONFIG -= app_bundle
 

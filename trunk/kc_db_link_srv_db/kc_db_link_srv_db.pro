@@ -9,6 +9,7 @@ QT       -= core gui
 INCLUDEPATH += ../reference/include
 INCLUDEPATH += ../include
 
+DESTDIR += ../bin
 TARGET = kc_db_link_srv_db
 TEMPLATE = lib
 
