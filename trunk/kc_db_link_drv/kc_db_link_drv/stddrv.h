@@ -10,6 +10,7 @@
 using namespace std;
 
 #include <boost/any.hpp>
+#include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>

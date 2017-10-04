@@ -14,8 +14,9 @@ namespace KC
     class IKCSrvDbDrv
     {
     public:
-        // 初始化
-        virtual void init(IKCSrvDbRespond& res) = 0;
+        // 启动和结束
+        virtual void start(IKCSrvDbRespond& res) = 0;
+        virtual void end(void) = 0;
         // 请求
         virtual void request(const char*, int len) = 0;
     };

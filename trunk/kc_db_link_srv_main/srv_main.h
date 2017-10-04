@@ -19,7 +19,7 @@ namespace KC
         void run(void) override;
 
         // 响应结果
-        void respond(const char*, int) override;
+        void respond(const char*, const char*, int) override;
 
     private:
         // 插件及上下文

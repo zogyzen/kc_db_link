@@ -16,7 +16,7 @@ namespace KC
         const IBundle& CALL_TYPE getBundle(void) const override;
 
         // 处理请求
-        void request(const char*, int, IRespondBackCall&) override;
+        void request(const char*, const char*, int, IRespondBackCall&) override;
 
     protected:
         // 处理请求

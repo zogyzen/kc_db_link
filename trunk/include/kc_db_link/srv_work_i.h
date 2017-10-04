@@ -10,7 +10,7 @@ namespace KC
     {
     public:
         // 响应结果
-        virtual void respond(const char*, int) = 0;
+        virtual void respond(const char*, const char*, int) = 0;
     };
 
     // 请求处理接口
@@ -18,7 +18,7 @@ namespace KC
     {
     public:
         // 处理请求
-        virtual void request(const char*, int, IRespondBackCall&) = 0;
+        virtual void request(const char*, const char*, int, IRespondBackCall&) = 0;
 
     protected:
         virtual CALL_TYPE ~IKCSrvWork() = default;

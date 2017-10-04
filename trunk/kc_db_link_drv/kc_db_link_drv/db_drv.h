@@ -6,14 +6,16 @@
 class CKCSrvDbDrv : public IKCSrvDbDrv
 {
 public:
-    CKCSrvDbDrv(const char* cfg, IKCSrvDbRespond& res);
+    CKCSrvDbDrv(const char* cfg);
 
-    // 初始化
-    void init(IKCSrvDbRespond& res) override;
+    // 启动和结束
+    void start(IKCSrvDbRespond& res) override;
+    void end(void) override;
     // 请求
     void request(const char*, int len) override;
 
 private:
+    bool m_isRunning = false;
     string m_MsgInName = "kc_db_message_queue_in_v10";
     string m_MsgOutName = "kc_db_message_queue_out_v10";
     string m_MemName = "kc_db_shared_memory_v10";

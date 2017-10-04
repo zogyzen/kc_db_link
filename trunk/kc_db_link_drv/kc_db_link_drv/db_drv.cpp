@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // CKCSrvDbDrv类
-CKCSrvDbDrv::CKCSrvDbDrv(const char* cfg, IKCSrvDbRespond& res)
+CKCSrvDbDrv::CKCSrvDbDrv(const char* cfg)
 {
     if (boost::filesystem::exists(cfg))
     {
@@ -21,17 +21,23 @@ CKCSrvDbDrv::CKCSrvDbDrv(const char* cfg, IKCSrvDbRespond& res)
         if (pt.get_child_optional("Config.Parameters.srv_net_port"))
             m_srvNetPort = lexical_cast<int>(pt.get<string>("Config.Parameters.srv_net_port.<xmlattr>.value"));
     }
-    init(res);
 }
 
-// 初始化
-void CKCSrvDbDrv::init(IKCSrvDbRespond& res)
+// 启动
+void CKCSrvDbDrv::start(IKCSrvDbRespond& res)
 {
     if (!m_netEnable)
     {
         message_queue mqOut(open_only, m_MsgOutName.c_str());
         managed_shared_memory mhm(open_only, m_MemName.c_str());
     }
+    m_isRunning = true;
+}
+
+// 结束
+void CKCSrvDbDrv::end(void)
+{
+    m_isRunning = false;
 }
 
 // 请求

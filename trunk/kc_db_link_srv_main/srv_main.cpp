@@ -1,5 +1,7 @@
 #include "srv_main.h"
 
+const int c_EachMessageQueueSize = 20;
+
 ////////////////////////////////////////////////////////////////////////////////
 // CKCSrvMain类
 CKCSrvMain::CKCSrvMain(const IBundle& bundle)
@@ -41,29 +43,29 @@ void CKCSrvMain::run(void)
         message_queue::remove(m_MsgInName.c_str());
         message_queue::remove(m_MsgOutName.c_str());
         shared_memory_object::remove(m_MemName.c_str());
-        message_queue mqIn(create_only, m_MsgInName.c_str(), m_MsgSize, sizeof(int));
-        message_queue mqOut(create_only, m_MsgOutName.c_str(), m_MsgSize, sizeof(int));
+        message_queue mqIn(create_only, m_MsgInName.c_str(), m_MsgSize, c_EachMessageQueueSize);
+        message_queue mqOut(create_only, m_MsgOutName.c_str(), m_MsgSize, c_EachMessageQueueSize);
         managed_shared_memory mhm(create_only, m_MemName.c_str(), m_MemSize);
         // 启动消息队列
         while (!m_exit)
         {
             unsigned int priority = 0;
             message_queue::size_type recvd_size = 0;
-            int num = 0;
+            char aRec[c_EachMessageQueueSize + 1] = { 0 };
             // 取消息
-            mqIn.receive(&num, sizeof(num), recvd_size, priority);
-            cout << "receive message - " << num << endl;
-            if (num <= 0) m_exit = true;
+            mqIn.receive(aRec, c_EachMessageQueueSize, recvd_size, priority);
+            string sRec(aRec);
+            cout << "receive message - " << sRec << endl;
+            if ("@exit" == sRec) m_exit = true;
             else
             {
                 // 得到消息请求内容
-                void* pRequest = mhm.get_address_from_handle(num);
-                int iLen = *(int*)pRequest;
+                pair<char*, unsigned> prReq = mhm.find<char>(aRec);
                 string sRequest;
-                sRequest.append((char*)pRequest + sizeof(int), (char*)pRequest + iLen);
-                mhm.deallocate(pRequest);
+                sRequest.append(prReq.first, prReq.second);
+                mhm.destroy<char>(aRec);
                 // 处理请求
-                wk.getServiceSafe<IKCSrvWork>().request(sRequest.c_str(), iLen, *this);
+                wk.getServiceSafe<IKCSrvWork>().request(aRec, sRequest.c_str(), sRequest.length(), *this);
             }
         }
         // 退出
@@ -80,18 +82,16 @@ void CKCSrvMain::run(void)
 }
 
 // 响应结果
-void CKCSrvMain::respond(const char* res, int len)
+void CKCSrvMain::respond(const char* name, const char* res, int len)
 {
-    cout << res << endl;
+    cout << name << " - " << res << endl;
     try
     {
         message_queue mqOut(open_only, m_MsgOutName.c_str());
         managed_shared_memory mhm(open_only, m_MemName.c_str());
-        void* pRes = mhm.allocate(len + sizeof(int));
-        memcpy(pRes, &len, sizeof(len));
-        memcpy((char*)pRes + sizeof(len), res, len);
-        int numHandle = mhm.get_handle_from_address(pRes);
-        mqOut.send(&numHandle, sizeof(numHandle), 0);
+        char* pRes = mhm.construct<char>(name)[len]();
+        memcpy(pRes, res, len);
+        mqOut.send(name, c_EachMessageQueueSize, 0);
     }
     catch (std::exception &ex)
     {

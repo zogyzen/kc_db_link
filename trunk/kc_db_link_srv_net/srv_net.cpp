@@ -38,7 +38,7 @@ void CKCSrvNet::run(void)
 }
 
 // 响应结果
-void CKCSrvNet::respond(const char*, int)
+void CKCSrvNet::respond(const char*, const char*, int)
 {
 
 }
