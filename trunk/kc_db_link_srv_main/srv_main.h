@@ -27,8 +27,7 @@ namespace KC
         const IBundle& m_bundle;
         // 其他参数
         atomic_bool m_exit;
-        string m_MsgInName;
-        string m_MsgOutName;
+        string m_MsgName;
         unsigned m_MsgSize = 100;
         string m_MemName;
         unsigned m_MemSize = 1024 * 1024 * 8;

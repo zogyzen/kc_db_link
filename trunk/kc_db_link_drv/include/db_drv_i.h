@@ -15,9 +15,9 @@ namespace KC
     {
     public:
         // 启动和结束
-        virtual void start(IKCSrvDbRespond& res) = 0;
+        virtual void start(void) = 0;
         virtual void end(void) = 0;
         // 请求
-        virtual void request(const char*, int len) = 0;
+        virtual void request(const char*, int len, IKCSrvDbRespond& res) = 0;
     };
 }

@@ -7,17 +7,24 @@ class CKCSrvDbDrv : public IKCSrvDbDrv
 {
 public:
     CKCSrvDbDrv(const char* cfg);
+    ~CKCSrvDbDrv(void);
 
     // 启动和结束
-    void start(IKCSrvDbRespond& res) override;
+    void start(void) override;
     void end(void) override;
     // 请求
-    void request(const char*, int len) override;
+    void request(const char*, int len, IKCSrvDbRespond& res) override;
+
+protected:
+    void startMQ(void);
 
 private:
-    bool m_isRunning = false;
-    string m_MsgInName = "kc_db_message_queue_in_v10";
-    string m_MsgOutName = "kc_db_message_queue_out_v10";
+    atomic_bool m_isRunning;
+    atomic_int m_index;
+    boost::thread *m_thrd = nullptr;
+    // 配置
+    string m_MsgName = "kc_db_message_queue_v10";
+    unsigned m_MsgSize = 100;
     string m_MemName = "kc_db_shared_memory_v10";
     bool m_netEnable = false;
     string m_srvNetIP = "127.0.0.1";
