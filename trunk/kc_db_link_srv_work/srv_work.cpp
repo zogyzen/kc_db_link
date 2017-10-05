@@ -26,6 +26,7 @@ const IBundle& CKCSrvWork::getBundle(void) const
 // 处理请求
 void CKCSrvWork::request(const char* name, const char* req, int len, IRespondBackCall& res)
 {
+    m_context.WriteLogDebug((m_context.getHint("Message_work_") + string(name)).c_str(), __FUNCTION__, req);
     try
     {
         res.respond(name, req, len);

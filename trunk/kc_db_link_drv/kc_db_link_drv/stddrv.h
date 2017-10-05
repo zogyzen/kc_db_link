@@ -4,6 +4,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <thread>
 #include <memory>
 #include <functional>
 #include <atomic>

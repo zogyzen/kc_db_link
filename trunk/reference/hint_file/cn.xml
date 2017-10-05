@@ -25,4 +25,5 @@
 	<Message_queue_end String="结束消息队列." />
 	<Message_queue_exception String="消息队列异常." />
 	<Respond_exception String="响应异常." />
+	<Message_work_ String="处理消息 - " />
 </Hint>

@@ -25,4 +25,5 @@
 	<Message_queue_end String="End message queue." />
 	<Message_queue_exception String="Message queue exception." />
 	<Respond_exception String="Respond exception." />
+	<Message_work_ String="Message work - " />
 </Hint>
