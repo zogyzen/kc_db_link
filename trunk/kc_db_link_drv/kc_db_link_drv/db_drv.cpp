@@ -95,7 +95,7 @@ void CKCSrvDbDrv::startMQ(void)
                     {
                     }
                 };
-                volatile std::thread tBack(fres);
+                volatile boost::thread tBack(fres);
             }
         }
         while (m_isRunning);
