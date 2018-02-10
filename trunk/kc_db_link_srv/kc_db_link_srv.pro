@@ -38,7 +38,7 @@ win32 {
     LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_filesystem-mgw72-mt-x32-1_66.a
     LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_thread-mgw72-mt-x32-1_66.a
 
-    varCopyHintFile = \"$$PWD/depend\" \"$$OUT_PWD/../bin\"
+    varCopyHintFile = \"$$PWD/../reference\" \"$$OUT_PWD/../bin\"
     varCopyHintFile ~= s,/,\\,g
     QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$varCopyHintFile
     export(QMAKE_POST_LINK)
