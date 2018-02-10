@@ -29,6 +29,7 @@ void CKCSrvWork::request(const char* name, const char* req, int len, IRespondBac
     m_context.WriteLogDebug((m_context.getHint("Message_work_") + string(name)).c_str(), __FUNCTION__, req);
     try
     {
+        // todo: 处理请求，解析JSON、数据库等操作
         res.respond(name, req, len);
     }
     catch(std::exception &ex)
