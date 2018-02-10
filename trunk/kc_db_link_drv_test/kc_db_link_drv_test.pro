@@ -1,6 +1,6 @@
 QT -= gui core
 
-INCLUDEPATH += ../include
+INCLUDEPATH += ../kc_db_link_drv_inf
 LIBS += -static-libstdc++
 
 CONFIG += c++11
@@ -35,6 +35,11 @@ win32 {
     LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_system-mgw72-mt-x32-1_66.a
     LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_filesystem-mgw72-mt-x32-1_66.a
     LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_thread-mgw72-mt-x32-1_66.a
+
+    varCopyConfig = \"$$PWD/../kc_db_link_drv_inf/config.xml\" \"$$OUT_PWD/../bin/\"
+    varCopyConfig ~= s,/,\\,g
+    QMAKE_POST_LINK += $$QMAKE_COPY $$varCopyConfig
+    export(QMAKE_POST_LINK)
 }
 unix {
     SOURCES +=

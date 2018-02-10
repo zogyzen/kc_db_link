@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<Config>
+	<Parameters>
+		<message_queue_name value="kc_db_message_queue_v10" />
+		<message_queue_size value="100" />
+		<shared_memory_name value="kc_db_shared_memory_v10" />
+		<srv_net_enable value="0" />
+		<srv_net_ip value="127.0.0.1" />
+		<srv_net_port value="20179" />
+	</Parameters>
+</Config>
