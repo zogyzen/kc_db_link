@@ -8,6 +8,7 @@ QT       -= core gui
 
 INCLUDEPATH += ../reference/include
 INCLUDEPATH += ../include
+LIBS += -static-libstdc++
 
 DESTDIR += ../bin
 TARGET = kc_db_link_srv_work
@@ -36,9 +37,13 @@ HEADERS += \
     stdw.h
 
 win32 {
-    INCLUDEPATH += D:/library/boost_1_64_qt/include/
-    LIBS += -L"D:/library/boost_1_64_qt/lib/"
-    LIBS += -lboost_system-mgw53-mt-1_64 -lboost_thread-mgw53-mt-1_64 -lboost_filesystem-mgw53-mt-1_64
+    DEFINES += WIN32
+
+    INCLUDEPATH += D:\mycode\library\windows\boost-1_66-qt\include
+    LIBS += -LD:\mycode\library\windows\boost-1_66-qt\lib720
+    LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_system-mgw72-mt-x32-1_66.a
+    LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_filesystem-mgw72-mt-x32-1_66.a
+    LIBS += D:\mycode\library\windows\boost-1_66-qt\lib720\libboost_thread-mgw72-mt-x32-1_66.a
 }
 unix {
     target.path = /usr/lib
