@@ -18,8 +18,10 @@ public:
 class CJsonObj : public IJsonObj
 {
 public:
+    friend class CJsonManager;
     CJsonObj(CJsonManager&, CJsonObj* = nullptr, string = "");
     ~CJsonObj(void) override;
+
     IJsonManager& manager(void) override;
 
     const char* toStr(void) const override;
@@ -39,7 +41,13 @@ public:
 
 private:
     CJsonManager &m_man;
-    CJsonObj *m_own = nullptr;
+    CJsonObj* const m_own = nullptr;
+    vector<std::shared_ptr<CJsonObj>> m_subs;
     string m_name;
     property_tree::ptree m_pt;
 };
+extern "C"
+{
+    IJsonManager& GetJsonInf(const char*);
+    void freeJsonInf(void);
+}

@@ -9,6 +9,9 @@ public:
     CKCSrvDbDrv(const char* path);
     virtual ~CKCSrvDbDrv(void);
 
+    // Json
+    IJsonManager& GetJsonInf(const char*) override;
+    void freeJsonInf(void) override;
     // 启动和结束
     bool start(void) override;
     void end(void) override;

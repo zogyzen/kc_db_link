@@ -43,11 +43,18 @@ int main(int/* argc */, char *argv[])
                     }
                 };
                 CResp res;
+                // 请求
+                IJsonManager& jsnMan = drv.GetJsonInf(sDir.c_str());
                 string sReq;
                 do
                 {
                     cin >> sReq;
-                    drv.request(sReq.c_str(), sReq.length(), res);
+                    // 请求信息
+                    TJsonPack jsn = jsnMan.create();
+                    jsn.json().childObj("cmd").setVal("SQLQuery");
+                    jsn.json().childObj("txt").setVal(sReq.c_str());
+                    string sCmd = jsn.json().toStr();
+                    drv.request(sCmd.c_str(), sReq.length(), res);
                 } while ("exit" != sReq && "stop" != sReq);
                 if ("stop" == sReq) drv.stopSrv();
                 drv.end();

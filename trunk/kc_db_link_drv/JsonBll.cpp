@@ -32,7 +32,8 @@ IJsonObj& CJsonManager::create(void)
 }
 void CJsonManager::free(IJsonObj& jsn)
 {
-    delete &jsn;
+    if (nullptr == dynamic_cast<CJsonObj&>(jsn).m_own)
+        delete &jsn;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,6 +45,7 @@ CJsonObj::CJsonObj(CJsonManager &m, CJsonObj *v, string n)
 
 CJsonObj::~CJsonObj()
 {
+    m_subs.clear();
 }
 
 IJsonManager& CJsonObj::manager(void)
@@ -53,9 +55,11 @@ IJsonManager& CJsonObj::manager(void)
 
 const char* CJsonObj::toStr(void) const
 {
-    static thread_local stringstream ss;
+    stringstream ss;
     property_tree::write_json(ss, m_pt);
-    return ss.str().c_str();
+    static thread_local string s_str;
+    s_str = ss.str();
+    return s_str.c_str();
 }
 void CJsonObj::fromStr(const char* str)
 {
@@ -89,12 +93,14 @@ bool CJsonObj::existChild(const char* n) const
 IJsonObj& CJsonObj::childObj(const char* n)
 {
     CJsonObj* sub = new CJsonObj(m_man, this, n);
+    m_subs.push_back(std::shared_ptr<CJsonObj>(sub));
     if (m_pt.get_child_optional(n)) sub->m_pt = m_pt.get_child(n);
     return *sub;
 }
 IJsonObj& CJsonObj::addChild(const char* n, IJsonObj& subOld)
 {
     CJsonObj* sub = new CJsonObj(m_man, this, n);
+    m_subs.push_back(std::shared_ptr<CJsonObj>(sub));
     sub->m_pt = dynamic_cast<CJsonObj&>(subOld).m_pt;
     m_pt.add_child(n, sub->m_pt);
     return *sub;

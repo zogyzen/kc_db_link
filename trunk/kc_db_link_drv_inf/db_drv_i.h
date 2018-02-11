@@ -1,5 +1,7 @@
 #pragma once
 
+#include "kc_json_i.h"
+
 namespace KC
 {
     // 数据库接口驱动应答
@@ -14,6 +16,9 @@ namespace KC
     class IKCSrvDbDrv
     {
     public:
+        // Json
+        virtual IJsonManager& GetJsonInf(const char*) = 0;
+        virtual void freeJsonInf(void) = 0;
         // 启动和结束
         virtual bool start(void) = 0;
         virtual void end(void) = 0;

@@ -1,4 +1,5 @@
 #include "db_drv.h"
+#include "JsonBll.h"
 
 const int c_EachMessageQueueSize = 30;
 
@@ -48,6 +49,16 @@ CKCSrvDbDrv::CKCSrvDbDrv(const char* path) : m_index(0)
 CKCSrvDbDrv::~CKCSrvDbDrv(void)
 {
     this->end();
+}
+
+IJsonManager& CKCSrvDbDrv::GetJsonInf(const char* sPath)
+{
+    return ::GetJsonInf(sPath);
+}
+
+void CKCSrvDbDrv::freeJsonInf(void)
+{
+    ::freeJsonInf();
 }
 
 void CKCSrvDbDrv::startMQ(void)
