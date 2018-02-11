@@ -65,16 +65,17 @@ void CKCSrvMain::run(void)
                 wk.getServiceSafe<IKCSrvWork>().request(aRec, sRequest.c_str(), sRequest.length(), *this);
             }
         }
-        // 退出
-        message_queue::remove(m_MsgName.c_str());
-        shared_memory_object::remove(m_MemName.c_str());
-        m_context.WriteLogInfo(m_context.getHint("Message_queue_end"), __FUNCTION__, c_KCSrvMainSrvGUID);
     }
     catch(std::exception &ex)
     {
         cout << "Message Queue Exception - " << (string("[") + typeid(ex).name() + "] " + ex.what()) << endl;
         m_context.WriteLogFatal(m_context.getHint("Message_queue_exception"), __FUNCTION__, (string("[") + typeid(ex).name() + "] " + ex.what()).c_str());
     }
+    // 退出
+    cout << "stop server" << endl;
+    message_queue::remove(m_MsgName.c_str());
+    shared_memory_object::remove(m_MemName.c_str());
+    m_context.WriteLogInfo(m_context.getHint("Message_queue_end"), __FUNCTION__, c_KCSrvMainSrvGUID);
 }
 
 // 响应结果

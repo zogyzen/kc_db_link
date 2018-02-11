@@ -48,7 +48,9 @@ int main(int/* argc */, char *argv[])
                 {
                     cin >> sReq;
                     drv.request(sReq.c_str(), sReq.length(), res);
-                } while ("exit" != sReq);
+                } while ("exit" != sReq && "stop" != sReq);
+                if ("stop" == sReq) drv.stopSrv();
+                drv.end();
             }
         }
         else cout << "Load db driver fail, not exists function InitDbDrv" << endl;

@@ -27,11 +27,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    db_drv.cpp
+    db_drv.cpp \
+    JsonBll.cpp
 
 HEADERS += \
     db_drv.h \
-    stddrv.h
+    stddrv.h \
+    JsonBll.h
 
 win32 {
     DEFINES += WIN32

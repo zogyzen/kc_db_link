@@ -19,6 +19,8 @@ namespace KC
         virtual void end(void) = 0;
         // 请求
         virtual bool request(const char*, int len, IKCSrvDbRespond& res) = 0;
+        // 停止服务器
+        virtual void stopSrv(void) = 0;
         // 得到上次的错误
         virtual const char* getLastError(void) = 0;
     };

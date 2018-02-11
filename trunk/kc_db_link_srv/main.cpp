@@ -21,5 +21,6 @@ int main(int/* argc */, char *argv[])
         cont.getService<IKCSrvMain>(c_KCSrvMainSrvGUID).run();
     }
     else cout << "Load framework fail." << endl;
+    cout << "exit server" << endl;
     return 0;
 }

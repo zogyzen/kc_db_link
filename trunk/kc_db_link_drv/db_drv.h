@@ -14,6 +14,8 @@ public:
     void end(void) override;
     // 请求
     bool request(const char*, int len, IKCSrvDbRespond& res) override;
+    // 停止服务器
+    void stopSrv(void) override;
     // 得到上次的错误
     const char* getLastError(void) override;
 

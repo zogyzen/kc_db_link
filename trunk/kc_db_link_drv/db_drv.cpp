@@ -52,9 +52,9 @@ CKCSrvDbDrv::~CKCSrvDbDrv(void)
 
 void CKCSrvDbDrv::startMQ(void)
 {
+    string sPidName = m_MsgName + "_p" + lexical_cast<string>(getpid());
     try
     {
-        string sPidName = m_MsgName + "_p" + lexical_cast<string>(getpid());
         message_queue::remove(sPidName.c_str());
         message_queue mq(create_only, sPidName.c_str(), m_MsgSize, c_EachMessageQueueSize);
         managed_shared_memory mhm(open_only, m_MemName.c_str());
@@ -102,8 +102,9 @@ void CKCSrvDbDrv::startMQ(void)
     }
     catch (std::exception &ex)
     {
-        m_isRunning = false;
     }
+    message_queue::remove(sPidName.c_str());
+    m_isRunning = false;
 }
 
 // 启动
@@ -181,6 +182,25 @@ bool CKCSrvDbDrv::request(const char* req, int len, IKCSrvDbRespond& res)
         m_lastError = ex.what();
     }
     return bResult;
+}
+
+// 停止服务器
+void CKCSrvDbDrv::stopSrv(void)
+{
+    if (!m_isRunning)
+    {
+        m_lastError = "驱动实例没启动";
+        return;
+    }
+    try
+    {
+        message_queue mq(open_only, m_MsgName.c_str());
+        mq.send("@exit", c_EachMessageQueueSize, 0);
+    }
+    catch (std::exception &ex)
+    {
+        m_lastError = ex.what();
+    }
 }
 
 // 得到上次的错误
