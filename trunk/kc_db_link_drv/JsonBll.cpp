@@ -95,6 +95,7 @@ IJsonObj& CJsonObj::childObj(const char* n)
     CJsonObj* sub = new CJsonObj(m_man, this, n);
     m_subs.push_back(std::shared_ptr<CJsonObj>(sub));
     if (m_pt.get_child_optional(n)) sub->m_pt = m_pt.get_child(n);
+    else m_pt.add_child(n, sub->m_pt);
     return *sub;
 }
 IJsonObj& CJsonObj::addChild(const char* n, IJsonObj& subOld)
